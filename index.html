@@ -1,13 +1,14 @@
 <!doctype html>
+<!-- reveal.js 2.6.2 -->
 <html lang="en">
 
 	<head>
 		<meta charset="utf-8">
 
-		<title>reveal.js - The HTML Presentation Framework</title>
+		<title>What an Interface Can Do - Static Duck Typing</title>
 
-		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
-		<meta name="author" content="Hakim El Hattab">
+		<meta name="description" content="An exploration of Go interfaces">
+		<meta name="author" content="Thomas A. Boyer">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -15,7 +16,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<link rel="stylesheet" href="css/reveal.min.css">
-		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
@@ -34,328 +35,967 @@
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
+        <style type="text/css">
+            .reveal h6 {
+                text-transform: none;
+            }
+            .reveal .intro a:not(.image) {
+                color: #eee8d5;
+            }
+            .reveal pre code {
+              font-size: 120%;
+            }
+            .reveal .slides {
+              text-align: left;
+            }
+        </style>
+
 	</head>
 
 	<body>
 
 		<div class="reveal">
 
-			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
-				<section>
-					<h1>Reveal.js</h1>
-					<h3>HTML Presentations Made Easy</h3>
-					<p>
-						<small>Created by <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
-					</p>
-				</section>
 
 				<section>
-					<h2>Heads Up</h2>
-					<p>
-						reveal.js is a framework for easily creating beautiful presentations using HTML. You'll need a browser with
-						support for CSS 3D transforms to see it in its full glory.
-					</p>
-
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).
-					</aside>
-				</section>
-
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>
-							Slides can be nested inside of other slides,
-							try pressing <a href="#" class="navigate-down">down</a>.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Press down or up to navigate.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>Cornify</p>
-						<a class="test" href="http://cornify.com">
-							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 3</h2>
-						<p>That's it, time to go back up.</p>
-						<a href="#/2" class="image">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
-					</section>
+					<h1>What an Interface Can Do</h1>
+					<h3>Utah Gophers</h3>
+					<h3>4 November 2014</h3>
+					<p>Thom Boyer</p>
+					<p>Dish Digital</p>
+          <p><small>
+            This talk is online at 
+            <a href="http://thomboyer.com/Go-Interfaces?theme=simple">
+            thomboyer.com/Go-Interfaces</a>.
+          <br/>The sources are available on 
+            github at
+            <a href="https://github.com/perlmonger42/Go-Interfaces-Talk">
+              perlmonger42 / Go-Interfaces-Talk</a>.
+          </small></p>
 				</section>
 
 				<section>
-					<h2>Slides</h2>
-					<p>
-						Not a coder? No problem. There's a fully-featured visual editor for authoring these, try it out at <a href="http://slid.es" target="_blank">http://slid.es</a>.
-					</p>
-				</section>
-
-				<section>
-					<h2>Point of View</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview.
-					</p>
-					<p>
-						Hold down alt and click on any element to zoom in on it using <a href="http://lab.hakim.se/zoom-js">zoom.js</a>. Alt + click anywhere to zoom back out.
-					</p>
-				</section>
-
-				<section>
-					<h2>Works in Mobile Safari</h2>
-					<p>
-						Try it out! You can swipe through the slides and pinch your way to the overview.
-					</p>
-				</section>
-
-				<section>
-					<h2>Marvelous Unordered List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
-				</section>
-
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
-
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
-
-						For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-
-						```
-						<section data-markdown>
-						  ## Markdown support
-
-						  For those of you who like that sort of thing.
-						  Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-				</section>
-
-				<section id="transitions">
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like: <br>
-						<a href="?transition=cube#/transitions">Cube</a> -
-						<a href="?transition=page#/transitions">Page</a> -
-						<a href="?transition=concave#/transitions">Concave</a> -
-						<a href="?transition=zoom#/transitions">Zoom</a> -
-						<a href="?transition=linear#/transitions">Linear</a> -
-						<a href="?transition=fade#/transitions">Fade</a> -
-						<a href="?transition=none#/transitions">None</a> -
-						<a href="?#/transitions">Default</a>
-					</p>
-				</section>
-
-				<section id="themes">
-					<h2>Themes</h2>
-					<p>
-						Reveal.js comes with a few themes built in: <br>
-						<a href="?#/themes">Default</a> -
-						<a href="?theme=sky#/themes">Sky</a> -
-						<a href="?theme=beige#/themes">Beige</a> -
-						<a href="?theme=simple#/themes">Simple</a> -
-						<a href="?theme=serif#/themes">Serif</a> -
-						<a href="?theme=night#/themes">Night</a> <br>
-						<a href="?theme=moon#/themes">Moon</a> -
-						<a href="?theme=solarized#/themes">Solarized</a>
-					</p>
-					<p>
-						<small>
-							* Theme demos are loaded after the presentation which leads to flicker. In production you should load your theme in the <code>&lt;head&gt;</code> using a <code>&lt;link&gt;</code>.
-						</small>
-					</p>
-				</section>
-
-				<section>
-					<h2>Global State</h2>
-					<p>
-						Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-						will be added as a class to the document element when the slide is open. This lets you
-						apply broader style changes, like switching the background.
-					</p>
-				</section>
-
-				<section data-state="customevent">
-					<h2>Custom Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code data-trim contenteditable style="font-size: 18px; margin-top: 20px;">
-Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
-
-				<section>
-					<section data-background="#007777">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#007777"</code> on a slide to change the full page background to the given color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code>&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Repeated Image Backgrounds</h2>
-						<pre><code style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
-				</section>
-
-				<section data-transition="linear" data-background="#4d7e65" data-background-transition="slide">
-					<h2>Background Transitions</h2>
-					<p>
-						Pass reveal.js the <code>backgroundTransition: 'slide'</code> config argument to make backgrounds slide rather than fade.
-					</p>
-				</section>
-
-				<section data-transition="linear" data-background="#8c4738" data-background-transition="slide">
-					<h2>Background Transition Override</h2>
-					<p>
-						You can override background transitions per slide by using <code>data-background-transition="slide"</code>.
-					</p>
-				</section>
-
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
+					<h2>Interfaces Are Cool</h2>
+					<blockquote cite="http://research.swtch.com/interfaces">
+            &ldquo;Go's interfaces—static, checked at compile time, dynamic
+            when asked for—are, for me, the most exciting part of Go from a
+            language design point of view. If I could export one feature of Go
+            into other languages, it would be interfaces. &rdquo;
+            <br/>
+            — Russ Cox
 					</blockquote>
 				</section>
 
 				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
+					<h2>Safe Duck Typing</h2>
+					<blockquote cite="http://research.swtch.com/interfaces">
+            &ldquo;Go's interfaces let you use duck typing like you would in a
+            purely dynamic language like Python but still have the compiler
+            catch obvious mistakes like passing an int where an object with a
+            Read method was expected, or like calling the Read method with the
+            wrong number of arguments.&rdquo;
+            <br/>
+            — Russ Cox
+					</blockquote>
+				</section>
 
-    var nodes = document.querySelectorAll( selector );
+				<section>
+					<h2>Example Interfaces</h2>
+          <p>
+            To demonstrate the power of interfaces, we'll mostly be playing
+            with the <code>Image</code> interface. But first let's touch on
+            some of the supporting types:
+            <ul>
+              <li><code>image.Point</code></li>
+              <li><code>image.Rectangle</code></li>
+              <li><code>color.Color</code></li>
+              <li><code>color.Model</code></li>
+            </ul>
+          </p>
+				</section>
 
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
+				<section>
+          <h2><code>image.Point</code> and <code>image.Rectangle</code></h2>
+          <pre><code class="go" data-trim contenteditable>
+// An X, Y coordinate pair. The axes increase right and down.
+type Point struct {
+  X, Y int
+}
 
-      if( !node.className ) {
-        node.className += ' roll';
+// A Rectangle contains the points with Min.X <= X < Max.X,
+// Min.Y <= Y < Max.Y.  It is well-formed if Min.X <= Max.X
+// and likewise for Y. Points are always well-formed. A
+// rectangle's methods always return well-formed outputs for
+// well-formed inputs.
+type Rectangle struct {
+  Min, Max Point
+}
+					</code></pre>
+				</section>
+
+				<section>
+          <h2><code>color.Color</code> and <code>color.Model</code></h2>
+					<pre><code class="go" data-trim contenteditable>
+// Color can convert itself to alpha-premultiplied 16-bits
+// per channel RGBA. The conversion may be lossy.
+type Color interface {
+  // RGBA returns the alpha-premultiplied red, green, blue and
+  // alpha values for the color. Each value ranges within [0, 0xFFFF],
+  // but is represented by a uint32 so that multiplying by a
+  // blend factor up to 0xFFFF will not overflow.
+  RGBA() (r, g, b, a uint32)
+}
+
+// Model can convert any Color to one from its own color model.
+// The conversion may be lossy.
+type Model interface {
+  Convert(c Color) Color
+}
+					</code></pre>
+				</section>
+
+				<section>
+          <h2><code>image.Image</code></h2>
+					<pre><code class="go" data-trim contenteditable>
+type Image interface {
+  // ColorModel returns the Image's color model.
+  ColorModel() color.Model
+  // Bounds returns the domain for which At can return
+  // non-zero color.  The bounds do not necessarily contain
+  // the point (0, 0).
+  Bounds() Rectangle
+  // At returns the color of the pixel at (x, y).
+  // At(Bounds().Min.X, Bounds().Min.Y) returns the
+  // upper-left pixel of the grid.
+  // At(Bounds().Max.X-1, Bounds().Max.Y-1) returns the
+  // lower-right one.
+  At(x, y int) color.Color
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>What an Image Is Not</h2>
+          <p>
+          Package <code>image</code> provides <code>image.RGBA</code>,
+          a concrete type that implements <code>image.Image</code>.
+          It contains a slice of bytes (<code>Pix
+          []uint8</code>) that encodes the red, green, blue, and
+          alpha components of each pixel the image contains.
+          </p>
+          <p>But &mdash; as you can tell from the interface definition &mdash;
+          an <code>Image</code> does not <em>have</em> to contain pixel
+          storage.  As long as its <code>At()</code> method
+          can tell what color each pixel is, that is
+          sufficient.
+				</section>
+
+				<section>
+          <h2>Creating an Empty Picture</h2>
+          <p>Here is a simple program that creates a blank image and
+          writes it to a file in PNG format.</p>
+					<pre><code class="go" data-trim contenteditable>
+package main
+import ("image"; "image/png"; "log"; "os")
+
+func main() {
+  size := image.Point{850, 400}
+  m := image.NewRGBA(image.Rectangle{image.ZP, size})
+  outFilename := "transparent.png"
+  outFile, err := os.Create(outFilename)
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer outFile.Close()
+  log.Print("Saving image to: ", outFilename)
+  png.Encode(outFile, m)
+}
+					</code></pre>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>transparent.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/transparent.png"/>
+				</section>
+
+				<section>
+					<h2>The Simplest <code>Image</code> Possible</h2>
+					<pre><code class="go" data-trim contenteditable>
+package main
+import ("image"; "image/png"; "image/color"; "log"; "os")
+
+func main() {
+  outFilename, m := makeSampleImage()
+  outFile, err := os.Create(outFilename)
+  if err != nil {
+    log.Fatal(err)
+  }
+  defer outFile.Close()
+  log.Print("Saving image to: ", outFilename)
+  png.Encode(outFile, m)
+}
+
+func makeSampleImage() (string, image.Image) {
+  return "rectangle.png", Rectangle{}
+}
+
+type Rectangle struct { }
+
+func (shape Rectangle) ColorModel() color.Model {
+  return color.RGBAModel
+}
+
+func (shape Rectangle) Bounds() image.Rectangle {
+  return image.Rect(0, 0, 850, 400)
+}
+
+func (shape Rectangle) At(x, y int) color.Color {
+  return color.RGBA{0, 0, 255, 255} // blue
+}
+					</code></pre>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>rectangle.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/rectangle.png"/>
+				</section>
+
+
+				<section>
+					<h2>The Simplest Geometric Shape Possible</h2>
+					<pre><code class="go" data-trim contenteditable>
+func makeSampleImage() (string, image.Image) {
+  hotpink := color.RGBA{255, 25, 155, 255}
+  return "circle.png", Circle{Radius: 200, Color: hotpink}
+}
+
+type Circle struct {
+  Radius int
+  Color  color.Color
+}
+
+func (shape Circle) Bounds() image.Rectangle {
+  r := shape.Radius
+  return image.Rect(-r, -r, r, r)
+}
+
+func (shape Circle) At(x, y int) color.Color {
+  r := shape.Radius
+  if x*x + y*y < r*r {
+    return shape.Color
+  }
+  return color.RGBA{0, 0, 0, 0}
+}
+					</code></pre>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>circle.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/circle.png"/>
+				</section>
+
+
+				<section>
+					<h2>Nested Circles</code></h2>
+					<pre><code class="go" data-trim contenteditable>
+func makeSampleImage() (string, image.Image) {
+  return "colorings.png", ColorRings{Radius: 200}
+}
+
+type ColorRings struct {
+  Radius int
+}
+
+func (shape ColorRings) Bounds() image.Rectangle {
+  r := shape.Radius
+  return image.Rect(-r, -r, r, r)
+}
+
+func (shape ColorRings) At(x, y int) color.Color {
+  distance := int(math.Hypot(float64(x), float64(y)))
+  return RainbowColor(distance * 6 / shape.Radius)
+}
+
+func RainbowColor(n int) color.Color {
+  switch n {
+  case 0: return color.RGBA{0xFF, 0x00, 0x00, 255} // Red
+  case 1: return color.RGBA{0xFF, 0xA5, 0x00, 255} // Orange
+  case 2: return color.RGBA{0xFF, 0xFF, 0x00, 255} // Yellow
+  case 3: return color.RGBA{0x3C, 0xB3, 0x71, 255} // Medium Sea Green
+  case 4: return color.RGBA{0x1E, 0x90, 0xFF, 255} // Dodger Blue
+  case 5: return color.RGBA{0x93, 0x70, 0xDB, 255} // Medium Purple
+  }
+  return color.RGBA{0, 0, 0, 0}
+}
+					</code></pre>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>colorings.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/colorings.png"/>
+				</section>
+
+
+				<section>
+					<h2>Blur</code></h2>
+					<pre><code class="go" data-trim contenteditable>
+func makeSampleImage() (string, image.Image) {
+  return "blur.png", Blur{
+    Image: ColorRings{Radius: 200},
+    BlurRadius: 8,
+  }
+}
+
+type Blur struct {
+  Image  image.Image
+  BlurRadius int
+}
+
+func (shape Blur) Bounds() image.Rectangle {
+  return shape.Image.Bounds()
+}
+
+func (shape Blur) At(x, y int) color.Color {
+  var sumWeight, sumR, sumG, sumB float64
+  radius := float64(shape.BlurRadius)
+  for i := x - shape.BlurRadius; i < x+shape.BlurRadius+1; i++ {
+    for j := y - shape.BlurRadius; j < y+shape.BlurRadius+1; j++ {
+      dist := math.Hypot(float64(i-x), float64(j-y))
+      if dist <= radius {
+        weight := 1 / (1 + dist)
+        r, g, b, _ := shape.Image.At(i, j).RGBA()
+        sumR += float64(r) * weight
+        sumG += float64(g) * weight
+        sumB += float64(b) * weight
+        sumWeight += weight
       }
     }
   }
+  _, _, _, a := shape.Image.At(x, y).RGBA()
+  return color.RGBA{
+    uint8(sumR / sumWeight * (255.0 / 65535)),
+    uint8(sumG / sumWeight * (255.0 / 65535)),
+    uint8(sumB / sumWeight * (255.0 / 65535)),
+    uint8(a * 255 / 65535),
+  }
+}
+
+type ColorRings struct {
+  Radius int
+}
+
+func (shape ColorRings) ColorModel() color.Model {
+  return color.RGBAModel
+}
+
+func (shape ColorRings) Bounds() image.Rectangle {
+  r := shape.Radius
+  return image.Rect(-r, -r, r, r)
+}
+
+func (shape ColorRings) At(x, y int) color.Color {
+  distance := int(math.Hypot(float64(x), float64(y)))
+  return RainbowColor(distance * 6 / shape.Radius)
+}
+
+func RainbowColor(n int) color.Color {
+  switch n {
+  case 0: return color.RGBA{0xFF, 0x00, 0x00, 255} // Red
+  case 1: return color.RGBA{0xFF, 0xA5, 0x00, 255} // Orange
+  case 2: return color.RGBA{0xFF, 0xFF, 0x00, 255} // Yellow
+  case 3: return color.RGBA{0x3C, 0xB3, 0x71, 255} // Medium Sea Green
+  case 4: return color.RGBA{0x1E, 0x90, 0xFF, 255} // Dodger Blue
+  case 5: return color.RGBA{0x93, 0x70, 0xDB, 255} // Medium Purple
+  }
+  return color.RGBA{0, 0, 0, 0}
 }
 					</code></pre>
-					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>blur.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/blur.png"/>
+				</section>
+
+
+				<section>
+          <h2>Trigonometry: red=sin(x), green=cos(y)</h2>
+					<pre><code class="go" data-trim contenteditable>
+func makeSampleImage() (string, image.Image) {
+  return "gingham.png", Gingham{image.Point{850, 400}}
+}
+
+type Gingham struct {
+  Size image.Point
+}
+
+func (shape Gingham) At(x, y int) color.Color {
+  sinx := math.Sin(float64(x)/25.0)
+  cosy := math.Cos(float64(y)/25.0)
+  return color.RGBA{
+    uint8(math.Abs(sinx) * 255),
+    uint8(math.Abs(cosy) * 255),
+    128,
+    255,
+  }
+}
+					</code></pre>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>gingham.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/gingham.png"/>
+				</section>
+
+
+
+
+				<section>
+          <h2>Sierpinski Carpet</h2>
+          Take a square carpet, divide it into nine smaller squares,
+          and remove the middle square. Recur on the remaining squares.
+          <br/>
+          <img src="code/183px-Menger_0.PNG"/>
+          <img src="code/183px-Menger_1.PNG"/>
+          <img src="code/183px-Menger_2.PNG"/>
+          <br/>
+          <img src="code/183px-Menger_3.PNG"/>
+          <img src="code/183px-Menger_4.PNG"/>
+          <img src="code/183px-Menger_5.PNG"/>
+        </section>
+
+				<section>
+          <h2>Sierpinski Carpet</h2>
+					<pre><code class="go" data-trim contenteditable>
+func makeSampleImage() (string, image.Image) {
+  return "sierpinski.png", SierpinskiCarpet{}
+}
+
+type SierpinskiCarpet struct { }
+
+func (shape SierpinskiCarpet) Bounds() image.Rectangle {
+  return image.Rect(0, 0, 850, 400)
+}
+
+func (shape SierpinskiCarpet) At(x, y int) color.Color {
+  for ; x > 0 || y > 0; x, y = x/3, y/3 {
+    if x%3 == 1 && y%3 == 1 {
+      return color.RGBA{0, 0, 0, 0}
+    }
+  }
+  return color.RGBA{0,55,255,255};
+}
+					</code></pre>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>sierpinski.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/sierpinski.png"/>
 				</section>
 
 				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
+          <h2>Mandelbrot Set</h2>
+					<pre><code class="go" data-trim contenteditable>
+func makeSampleImage() (string, image.Image) {
+  return "mandelbrot.png", Mandelbrot{
+    Size: image.Point{700, 400},
+    Cx:   -1,
+    Cy:   -0.285,
+    Zoom: 120,
+  }
+}
+
+type Mandelbrot struct {
+  Size  image.Point
+  Cx    float64
+  Cy    float64
+  Zoom  float64
+}
+
+func (shape Mandelbrot) At(xi, yi int) color.Color {
+  x0 := float64(xi-shape.Size.X/2)/(shape.Zoom*100) + shape.Cx
+  y0 := float64(yi-shape.Size.Y/2)/(shape.Zoom*100) + shape.Cy
+  x, y := x0, y0
+  xx, yy := x*x, y*y
+
+  iteration := 0
+  max_iterations := 1000
+  for xx+yy < 4 && iteration < max_iterations {
+    x, y = xx-yy+x0, 2*x*y+y0
+    xx, yy = x*x, y*y
+    iteration += 1
+  }
+  return ThousandColors(iteration)
+}
+
+
+func RainbowColor(n int) color.Color {
+  switch n {
+  case 0: return color.RGBA{0xFF, 0x00, 0x00, 255} // Red
+  case 1: return color.RGBA{0xFF, 0xA5, 0x00, 255} // Orange
+  case 2: return color.RGBA{0xFF, 0xFF, 0x00, 255} // Yellow
+  case 3: return color.RGBA{0x3C, 0xB3, 0x71, 255} // Medium Sea Green
+  case 4: return color.RGBA{0x1E, 0x90, 0xFF, 255} // Dodger Blue
+  case 5: return color.RGBA{0x93, 0x70, 0xDB, 255} // Medium Purple
+  }
+  return color.RGBA{0, 0, 0, 0}
+}
+
+func ThousandColors(n int) color.Color {
+  // Interpolate a thousand colors between yellow and purple.
+  if n < 0 || n >= 1000 {
+    return color.RGBA{0, 0, 0, 0}
+  }
+  const W = 250 // band width: number of values to map between 2 adjacent colors
+  i := n / W    // convert 0..999 to 0..3
+  c1 := RainbowColor(i + 2)
+  c2 := RainbowColor(i + 3)
+  // interpolate between c1 and c2
+  d := uint32(n % W) // d is 0..W-1, the relative distance between c1 & c2
+  d2 := (W - 1) - d  // d2 is W-1..0, the relative distance between c2 & c1
+  r1, g1, b1, a1 := c1.RGBA()
+  r2, g2, b2, a2 := c2.RGBA()
+  r := ((r1*d2 + r2*d) / W) * 255 / 65535
+  g := ((g1*d2 + g2*d) / W) * 255 / 65535
+  b := ((b1*d2 + b2*d) / W) * 255 / 65535
+  a := ((a1*d2 + a2*d) / W) * 255 / 65535
+  return color.RGBA{uint8(r), uint8(g), uint8(b), uint8(a)}
+}
+					</code></pre>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>mandelbrot.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/mandelbrot.png"/>
+				</section>
+
+
+				<section>
+					<h2>The Big Picture</h2>
+          <p>We can also create an <code>Image</code> by composing
+          smaller <code>Image</code>s.</p>
+					<pre><code class="go" data-trim contenteditable>
+func makeSampleImage() (string, image.Image) {
+  circle := Circle{Radius: 100, Color: RainbowColor(3)}
+  mandelbrot := Mandelbrot{
+    Size: image.Point{350, 200},
+    Cx:   -0.75,
+    Cy:   -0.0,
+    Zoom: 1,
+  }
+  gingham := Gingham{Size: image.Point{175, 175}}
+  composedImage := hcAppend(circle, mandelbrot, gingham)
+  return "composite.png", composedImage
+}
+
+type Composite struct {
+  images []image.Image
+  bounds []image.Rectangle
+}
+
+func (shape Composite) Bounds() image.Rectangle {
+  if len(shape.images) == 0 {
+    return image.Rect(0, 0, 0, 0)
+  }
+  bounds := shape.bounds[0]
+  for _, b := range shape.bounds {
+    bounds = bounds.Union(b)
+  }
+  return bounds
+}
+
+func (shape Composite) At(x, y int) color.Color {
+  p := image.Point{x, y}
+  for i, b := range shape.bounds {
+    if p.In(b) {
+      img := shape.images[i]
+      ib := img.Bounds()
+      p = p.Sub(b.Min).Add(ib.Min)
+      return img.At(p.X, p.Y)
+    }
+  }
+  return color.RGBA{0, 0, 0, 0}
+}
+
+func NewComposite() Composite {
+  return Composite{make([]image.Image, 0), make([]image.Rectangle, 0)}
+}
+
+func maxheight(images []image.Image) int {
+  tallest := 0
+  for _, img := range images {
+    if h := img.Bounds().Dy(); h > tallest {
+      tallest = h
+    }
+  }
+  return tallest
+}
+
+func maxwidth(images []image.Image) int {
+  widest := 0
+  for _, img := range images {
+    if w := img.Bounds().Dx(); w > widest {
+      widest = w
+    }
+  }
+  return widest
+}
+
+// hcAppend builds a composite image from a list of images, arranging them
+// horizontally from left to right, with adjacent images touching, and with
+// their vertical centers aligned. The 'h' in 'hc' means horizontally-arranged,
+// and the 'c' in 'hc' means center-aligned.
+func hcAppend(images ...image.Image) image.Image {
+  shape := NewComposite()
+  tallest := maxheight(images)
+  left := 0
+  for _, img := range images {
+    sz := img.Bounds().Size()
+    w, h := sz.X, sz.Y
+    top := (tallest - h) / 2
+    shape.images = append(shape.images, img)
+    shape.bounds = append(shape.bounds, image.Rect(left, top, left+w, top+h))
+    left += w
+  }
+  return shape
+}
+
+// vcAppend builds a composite image from a list of images, arranging them
+// vertically from top to bottom, with adjacent images touching, and with their
+// horizontal centers aligned. The 'v' in 'vc' means vertically-arranged, and
+// the 'c' in 'vc' means center-aligned.
+func vcAppend(images ...image.Image) image.Image {
+  shape := NewComposite()
+  widest := maxwidth(images)
+  top := 0
+  for _, img := range images {
+    sz := img.Bounds().Size()
+    w, h := sz.X, sz.Y
+    left := (widest - w) / 2
+    shape.images = append(shape.images, img)
+    shape.bounds = append(shape.bounds, image.Rect(left, top, left+w, top+h))
+    top += h
+  }
+  return shape
+}
+					</code></pre>
+				</section>
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>composite.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/composite.png"/>
+				</section>
+
+
+				<section>
+          <h2>The <code>image/draw</code> Package</h2>
+          <p>Package <code>image/draw</code> defines only one operation:
+          drawing a source image onto a destination image, through an optional
+          mask image. This one operation is surprisingly versatile and can
+          perform a number of common image manipulation tasks elegantly and
+          efficiently.</p>
+          <pre><code class="go" data-trim contenteditable>
+func DrawMask(dst  image.Image,   r image.Rectangle,
+              src  image.Image,  sp image.Point,
+              mask image.Image,  mp image.Point,
+              op   Op)
+					</code></pre>
+				</section>
+
+
+				<section>
+          <img src="code/go-imagedraw-package_20.png" width="800" height="600"/>
+				</section>
+
+
+				<section>
+          <h2>A Relevant Example</h2>
+          <p>Check out this gnarly gopher. (Or is that "gnawrly"?)</p>
+          <img src="code/gophers1.jpg"/>
+				</section>
+
+
+				<section>
+          <h2>A Gopher Chewing Holes in a Carpet</h2>
+          <p>Let's copy that gopher into a PNG file, using the Sierpinski
+          Carpet as a mask.</p>
+          <pre><code class="go" data-trim contenteditable>
+func makeSampleImage() (string, image.Image) {
+  gopher := loadGopher()
+  rect := gopher.Bounds()
+  carpet := SierpinskiCarpet{rect.Size(), image.Point{0, 200}}
+
+  // Copy the gopher into an RGBA image, using Sierpinski mask.
+  result := image.NewRGBA(rect)
+  draw.DrawMask(result, rect,
+                gopher, rect.Min,
+                carpet, image.ZP,
+                draw.Over)
+  return "mask.png", result
+}
+
+func loadGopher() image.Image {
+  inFilename := "gophers1.jpg"
+  inFile, err := os.Open(inFilename)
+  if err != nil { log.Fatal(err) }
+  defer inFile.Close()
+  log.Print("Reading image from: ", inFilename)
+  gopher, err := jpeg.Decode(inFile)
+  if err != nil { log.Fatal(err) }
+  return gopher
+}
+
+
+type SierpinskiCarpet struct {
+  Size image.Point
+  Offset image.Point
+}
+
+func (shape SierpinskiCarpet) Bounds() image.Rectangle {
+  return image.Rectangle{image.ZP, shape.Size}
+}
+
+func (shape SierpinskiCarpet) At(x, y int) color.Color {
+  x += shape.Offset.X
+  y += shape.Offset.Y
+  for ; x > 0 || y > 0; x, y = x/3, y/3 {
+    if x%3 == 1 && y%3 == 1 {
+      return color.RGBA{255, 255, 255, 255}
+    }
+  }
+  return color.RGBA{0,0,0,0};
+}
+					</code></pre>
+				</section>
+
+
+				<section data-background="code/FairyTaleCircles.jpg">
+					<h2>mask.png</h2>
+          <p>And here&apos;s the resulting image:</p>
+          <img src="code/mask.png"/>
+				</section>
+
+
+				<section>
+					<h2>Interfaces</h2>
+          <p>All these examples of <code>Image</code> implementations are
+          interesting enough (or not, depending on your taste). But how
+          expensive is it to call methods through an interface,
+          when the concrete type is not known until runtime?
+          </p>
+          <p>
+          We'll need to cover some background first,
+          but eventually we'll have an answer to this question.
+          </p>
+				</section>
+
+
+				<section>
+					<h2>An Acknowledgement</h2>
+          <p>
+            <em>
+            Before we go any further, I'd like to acknowledge my 
+            indebtedness to Russ Cox and his excellent blog post on this
+            subject, available at
+              <a="http://research.swtch.com/interfaces">
+                  http://research.swtch.com/interfaces</a>.
+            The discussion that follows is a summary of that post, and
+            I have shamelessly borrowed his pictures and examples.
+          </em>
+          </p>
+          <p>
+          <em>
+            The post is five years old, so some details are likely to have
+            changed.
+            </em>
+          </p>
 				</section>
 
 				<section>
-					<section id="fragments">
-						<h2>Fragmented Views</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<ol>
-							<li class="fragment"><code>any type</code></li>
-							<li class="fragment"><em>of view</em></li>
-							<li class="fragment"><strong>fragments</strong></li>
-						</ol>
-
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's a few styles of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment roll-in">roll-in</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-green">highlight-green</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-						<p class="fragment current-visible">current-visible</p>
-						<p class="fragment highlight-current-blue">highlight-current-blue</p>
-					</section>
+          <h2>A Sample Interface</h2>
+          <p>
+            It will be helpful to have a specific example as we discuss
+            interface implementation. So let's define the interface
+            <code>Stringer</code>&hellip;
+          </p>
+          <pre><code class="go" data-trim contenteditable>
+type Stringer interface {
+    String() string
+}
+          </code></pre>
 				</section>
 
 				<section>
-					<h2>Spectacular image!</h2>
-					<a class="image" href="http://lab.hakim.se/meny/" target="_blank">
-						<img width="320" height="299" src="http://s3.amazonaws.com/hakim-static/portfolio/images/meny.png" alt="Meny">
-					</a>
+          <h2>Interface Operations</h2>
+          <pre><code class="go" data-trim contenteditable>
+func ToString(any interface{}) string {
+    if v, ok := any.(Stringer); ok {
+        return v.String()
+    }
+    switch v := any.(type) {
+    case int:
+        return strconv.Itoa(v)
+    case float:
+        return strconv.Ftoa(v, 'g', -1)
+    }
+    return "???"
+}
+          </code></pre>
+          <p>This code uses interface values in three different ways:</p>
+          <ul>
+            <li>Call a method defined by the interface.</li>
+            <li>Convert to another type (a <em>type assertion</em>).</li>
+            <li>Get the concrete type.</li>
+          </ul>
+          <p>
+            So the implementation of interfaces must support (at least)
+            these three use cases.
+          </p>
+				</section>
+
+
+				<section>
+          <h2>A Sample Implementation</h2>
+          <p>Now, let's define a type that implements <code>Stringer</code>.</p>
+          <pre><code class="go" data-trim contenteditable>
+type Binary uint64
+
+func (i Binary) String() string {
+    return strconv.FormatUint(i.Get(), 2)
+}
+
+func (i Binary) Get() uint64 {
+    return uint64(i)
+}
+          </code></pre>
+				</section>
+
+
+				<section>
+          <h2>A Binary Value</h2>
+          <p>
+          A value of type <code>Binary</code> is just a 64-bit integer
+          made up of two 32-bit words (we'll assume a 32-bit machine).
+          So, when we assign a value to <code>var b Binary</code>, the
+          situation looks like this:
+          </p>
+
+          <img src="code/gointer1.png" style="border: 10px solid white;"/>
+
+          <p>
+            That's pretty straightforward. But what happens when we
+            copy <code>b</code> into a variable of type <code>Stringer</code>?
 				</section>
 
 				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, below is an example that's been uploaded to SlideShare.</p>
-					<iframe id="slideshare" src="http://www.slideshare.net/slideshow/embed_code/13872948" width="455" height="356" style="margin:0;overflow:hidden;border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
-					<script>
-						document.getElementById('slideshare').attributeName = 'allowfullscreen';
-					</script>
+          <h2>A Stringer Value</h2>
+          <p>An interface variable is a two-word pair, containing information
+          about the concrete type and the actual value stored in the
+          interface variable.</p>
+          <p>
+          <img src="code/gointer2.png"
+               style="border: 10px solid white;"
+               align="left" />
+          The info about the concrete type is a pointer to an
+          <em>itable</em>,
+          the first item of which is a pointer to the run-time
+          representation of type <code>Binary</code>; it also contains a
+          pointer to <code>Binary</code>&apos;s <code>String()</code> method.
+          The info about the actual data is a pointer to a heap-allocated
+          copy of the original <code>Binary</code> value.
+          </p>
 				</section>
 
-				<section>
-					<h2>Take a Moment</h2>
-					<p>
-						Press b or period on your keyboard to enter the 'paused' mode. This mode is helpful when you want to take distracting slides off the screen
-						during a presentation.
-					</p>
-				</section>
 
 				<section>
-					<h2>Stellar Links</h2>
+          <h2>The Cost of A Call</h2>
+          <p>So, how expensive <em>is</em> a method call on an interface?</p>
+          <br/>
+          <blockquote>
+            Actually, it's pretty cheap.
+            It's about as expensive as a virtual function call in C++.
+          </blockquote>
+          <br/>
+				</section>
+
+
+				<section>
+					<h2>Further Reading</h2>
 					<ul>
-						<li><a href="http://slid.es">Try the online editor</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js">Source code on GitHub</a></li>
-						<li><a href="http://twitter.com/hakimel">Follow me on Twitter</a></li>
+            <li>Russ Cox: &ldquo;<a href="http://research.swtch.com/interfaces">Go Data Structures: Interfaces</a>&rdquo;
+            <br/>
+            A discussion of the <em>itable</em> data structure.
+            </li>
+            <li>
+              Rob Pike: &ldquo;<a
+                href="http://blog.golang.org/laws-of-reflection">The
+                Laws of Reflection</a>&rdquo;
+              <br/>
+              Explains type assertions,
+              and how the reflection library yields information
+              from an interface value&apos;s type/value pair.
+            </li>
+            <li>
+              Nigel Tao: &ldquo;<a
+                href="http://blog.golang.org/go-image-package">The
+              Go image package</a>&rdquo;
+            </li>
+            <li>
+              Nigel Tao: &ldquo;<a
+                href="http://blog.golang.org/go-imagedraw-package">The
+              Go image/draw package</a>&rdquo;
+            </li>
 					</ul>
 				</section>
 
-				<section>
-					<h1>THE END</h1>
-					<h3>BY Hakim El Hattab / hakim.se</h3>
+				<section id="setup">
+					<h2>Slideshow Setup</h3>
+          <p>
+            Special thanks to
+            <a href="http://hakim.se/">Hakim El Hattab</a>,
+            for the slideshow framework used to create this deck:
+            &ldquo;<a
+              href="http://lab.hakim.se/reveal-js/#/">Reveal.js: HTML
+              Presentations Made Easy</a>.&rdquo;
+          </p>
+          <h3>Themes</h3>
+          <p>
+            Reveal.js comes with a few themes built in: <br/>
+            <a href="?#/setup">Default</a> -
+            <a href="?theme=sky#/setup">Sky</a> -
+            <a href="?theme=beige#/setup">Beige</a> -
+            <a href="?theme=simple#/setup">Simple</a> -
+            <a href="?theme=serif#/setup">Serif</a> -
+            <a href="?theme=night#/setup">Night</a> <br/>
+            <a href="?theme=moon#/setup">Moon</a> -
+            <a href="?theme=solarized#/themes">Solarized</a>
+          </p>
+          <h3>Transition Styles</h3>
+					<p>
+						You can select from different transitions, like: <br>
+						<a href="?#/setup">Default</a> -
+						<a href="?transition=none#/setup">None</a> -
+						<a href="?transition=fade#/setup">Fade</a> -
+						<a href="?transition=slide#/setup">Slide</a> -
+						<a href="?transition=concave#/setup">Concave</a> -
+						<a href="?transition=zoom#/setup">Zoom</a>
+					</p>
 				</section>
 
 			</div>
 
 		</div>
+
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
@@ -370,8 +1010,10 @@ function linkify( selector ) {
 				history: true,
 				center: true,
 
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        theme: 'simple',
+				//theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				//transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+        transition: 'linear',
 
 				// Parallax scrolling
 				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
