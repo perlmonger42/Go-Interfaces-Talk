@@ -425,39 +425,6 @@ func RainbowColor(n int) color.Color {
 
 
 				<section>
-          <h2>Trigonometry: red=sin(x), green=cos(y)</h2>
-					<pre><code class="go" data-trim contenteditable>
-func makeSampleImage() (string, image.Image) {
-  return "gingham.png", Gingham{image.Point{850, 400}}
-}
-
-type Gingham struct {
-  Size image.Point
-}
-
-func (shape Gingham) At(x, y int) color.Color {
-  sinx := math.Sin(float64(x)/25.0)
-  cosy := math.Cos(float64(y)/25.0)
-  return color.RGBA{
-    uint8(math.Abs(sinx) * 255),
-    uint8(math.Abs(cosy) * 255),
-    128,
-    255,
-  }
-}
-					</code></pre>
-				</section>
-
-				<section data-background="code/CiucasMountains-Romania.jpg">
-					<h2>gingham.png</h2>
-          <p>And here&apos;s the resulting image:</p>
-          <img src="code/gingham.png"/>
-				</section>
-
-
-
-
-				<section>
           <h2>Sierpinski Carpet</h2>
           Take a square carpet, divide it into nine smaller squares,
           and remove the middle square. Recur on the remaining squares.
